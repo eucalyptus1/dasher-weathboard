@@ -1,6 +1,8 @@
 var searchBtn = document.getElementById("#search-button");
 var searchInput = document.getElementById("#search-input");
 
+
+
 var key = "c118df7a58d35d00efaf3e629f196896";
 
 
@@ -24,18 +26,18 @@ function fetchLocation(currentCity) {
     console.log(data);
     return data;
   })
+  .then (function(data) {
+    var lat = data[0].lat;
+    var lon = data[0].lon;
+
+    var api2 = `http://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${key}`
+    fetch (api2)
+    .then(function(response) {
+      var data2 = response.json();
+      console.log(data2);
+      return data2;
+    })
+   })
 }
-
-// function fetchWeather(currentCity) {
-//    var api = `api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${key}`
-//    fetch (api)
-//    .then(function(response) {
-
-//     var data = response.json();
-//     console.log(data);
-//     return data;
-//    })
-
-// }
 
 searchBtn.addEventListener("click", searchCity);
