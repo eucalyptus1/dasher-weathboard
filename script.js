@@ -1,6 +1,7 @@
 var searchBtn = document.getElementById("#search-button");
 var searchInput = document.getElementById("#search-input");
 var currentSection = document.getElementById("#current-section");
+var fiveSection = document.getElementById("#five-day-section");
 
 
 
@@ -41,20 +42,29 @@ function fetchLocation(currentCity) {
     .then(function(data2){
       var cityName = data2.city.name;
       var countryAbrv = data2.city.country;
-      var desc = data2.list[0].weather[0].description;
-      var date = data2.list[0].dt;
 
-      var currentWeather = `
-      <h2>${cityName}, ${countryAbrv}</h2>
-      <p>${date}</p>
-      <p>${desc}</p>
+      var currentWeather = 
+      `<h2>${cityName}, ${countryAbrv}</h2>
+      <p>${data2.list[0].dt}</p>
+      <p>${data2.list[0].weather[0].description}</p>
       <img src="https://openweathermap.org/img/wn/${data2.list[0].weather[0].icon}@2x.png"/>
       <p>Temp: ${data2.list[0].main.temp}</p>
       <p>Humidity: ${data2.list[0].main.humidity}</p>
-      <p>Wind Speed: ${data2.list[0].wind.speed}mph</p>
-      `
+      <p>Wind Speed: ${data2.list[0].wind.speed}mph</p>`
 
       currentSection.innerHTML = currentWeather;
+
+      for (var i = 0; i < 5; i++) {
+        var fiveDay = document.createElement('div');
+        fiveDay.innerHTML = 
+        `<p>${data2.list[i].dt}</p>
+        <p>${data2.list[i].weather[0].description}</p>
+        <img src="https://openweathermap.org/img/wn/${data2.list[i].weather[0].icon}@2x.png"/>
+        <p>Temp: ${data2.list[i].main.temp}</p>
+        <p>Humidity: ${data2.list[i].main.humidity}</p>
+        <p>Wind`;
+        fiveSection.appendChild(fiveDay);
+        };
     })
    })
 }
