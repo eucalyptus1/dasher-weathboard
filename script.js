@@ -1,5 +1,6 @@
 var searchBtn = document.getElementById("#search-button");
 var searchInput = document.getElementById("#search-input");
+var currentSection = document.getElementById("#current-section");
 
 
 
@@ -35,7 +36,18 @@ function fetchLocation(currentCity) {
     .then(function(response) {
       var data2 = response.json();
       console.log(data2);
-      return data2;
+      return data2
+    })
+    .then(function(data2){
+      var cityName = data2.city.name;
+      var countryAbrv = data2.city.country;
+      var desc = data2.list[0].weather[0].description;
+
+      var currentWeather = `
+      <h2>${cityName}, ${countryAbrv}</h2>
+      <p>${desc}</p>`
+
+      currentSection.innerHTML = currentWeather;
     })
    })
 }
