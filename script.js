@@ -34,7 +34,7 @@ function fetchLocation(currentCity) {
     var lat = data[0].lat;
     var lon = data[0].lon;
 
-    var api2 = `http://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${key}`
+    var api2 = `http://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=imperial&appid=${key}`
     fetch (api2)
     .then(function(response) {
       var data2 = response.json();
@@ -51,7 +51,7 @@ function fetchLocation(currentCity) {
       <p>${currentDate}</p>
       <p>${data2.list[0].weather[0].description}</p>
       <img src="https://openweathermap.org/img/wn/${data2.list[0].weather[0].icon}@2x.png"/>
-      <p>Temp: ${data2.list[0].main.temp}</p>
+      <p>Temp: ${data2.list[0].main.temp}&degF</p>
       <p>Humidity: ${data2.list[0].main.humidity}</p>
       <p>Wind Speed: ${data2.list[0].wind.speed}mph</p>`
 
@@ -68,7 +68,7 @@ function fetchLocation(currentCity) {
         `<p>${newDate}</p>
         <p>${data2.list[i].weather[0].description}</p>
         <img src="https://openweathermap.org/img/wn/${data2.list[i].weather[0].icon}@2x.png"/>
-        <p>Temp: ${data2.list[i].main.temp}</p>
+        <p>Temp: ${data2.list[i].main.temp}&degF</p>
         <p>Humidity: ${data2.list[i].main.humidity}</p>
         <p>Wind Speed: ${data2.list[i].wind.speed}</p>`;
         fiveSection.appendChild(fiveDay);
