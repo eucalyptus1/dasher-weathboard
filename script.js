@@ -2,14 +2,24 @@ var searchBtn = document.getElementById("#search-button");
 var searchInput = document.getElementById("#search-input");
 var currentSection = document.getElementById("#current-section");
 var fiveSection = document.getElementById("#five-day-section");
+var historyList = document.getElementById("#history-list");
 
-
+historyArr = [];
 
 var key = "c118df7a58d35d00efaf3e629f196896";
 
 var currentDate = dayjs().format('MM-D-YYYY, dddd');
 
-
+var weatherHistory = JSON.parse(localStorage.getItem("weatherHistory"));
+if (weatherHistory) {
+  for (var i = 0; i < array.length; i++) {
+    const element = array[i];
+    historyBtn.innerText = cityName;
+      historyList.appendChild(historyBtn);
+      historyBtn.addEventListener("click", fetchLocation);
+    
+  }
+}
 
 
 
@@ -54,8 +64,34 @@ function fetchLocation(currentCity) {
       <p>Temp: ${data2.list[0].main.temp}&degF</p>
       <p>Humidity: ${data2.list[0].main.humidity}</p>
       <p>Wind Speed: ${data2.list[0].wind.speed}mph</p>`
-
+    
       currentSection.innerHTML = currentWeather;
+
+
+
+      // historyArr.push(cityName);
+      localStorage.setItem("weatherHistory", JSON.stringify(cityName));
+      var historyBtn = document.createElement("button");
+      historyBtn.innerText = cityName;
+      historyList.appendChild(historyBtn);
+      historyBtn.addEventListener("click", fetchLocation);
+
+
+      var clear = document.createElement("button");
+      clear.innerText = "Clear History";
+      clear.addEventListener("click", clearHistory);
+
+      function clearHistory() {
+        historyList.innerHTML = "";
+        localStorage.clear();
+      }
+
+
+      
+      console.log(historyArr);
+
+
+      // 5 day forecast
 
       for (var i = 1; i < 5; i++) {
 
