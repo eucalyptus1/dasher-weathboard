@@ -1,0 +1,36 @@
+main {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+#search-section {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    margin-right: auto;
+}
+
+#current-section {
+    display: flex;
+    flex-direction: column; 
+    flex-wrap: wrap;
+    margin-left: auto;
+}
+
+.weather-card {
+    margin: 0;
+    padding: 0;
+    width: 150px;
+    border: 5px;
+    border-style: solid;
+    border-color: royalblue;
+    border-radius: 5px;
+}
+
+.five-section {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+}

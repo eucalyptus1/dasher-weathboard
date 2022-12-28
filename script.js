@@ -57,17 +57,16 @@ function fetchLocation(currentCity) {
       
 
       var currentWeather = 
-      `<h2>${cityName}, ${countryAbrv}</h2>
+      `
+      <h2>${cityName}, ${countryAbrv}</h2>
       <p>${currentDate}</p>
       <p>${data2.list[0].weather[0].description}</p>
       <img src="https://openweathermap.org/img/wn/${data2.list[0].weather[0].icon}@2x.png"/>
       <p>Temp: ${data2.list[0].main.temp}&degF</p>
       <p>Humidity: ${data2.list[0].main.humidity}</p>
       <p>Wind Speed: ${data2.list[0].wind.speed}mph</p>`
-    
+  
       currentSection.innerHTML = currentWeather;
-
-
 
       historyArr.push(cityName);
       localStorage.setItem("weatherHistory", JSON.stringify(historyArr));
@@ -101,12 +100,14 @@ function fetchLocation(currentCity) {
         var fiveDay = document.createElement('div');
         
         fiveDay.innerHTML = 
-        `<p>${newDate}</p>
+        `<div class="weather-card">
+        <p>${newDate}</p>
         <p>${data2.list[i].weather[0].description}</p>
         <img src="https://openweathermap.org/img/wn/${data2.list[i].weather[0].icon}@2x.png"/>
         <p>Temp: ${data2.list[i].main.temp}&degF</p>
         <p>Humidity: ${data2.list[i].main.humidity}</p>
-        <p>Wind Speed: ${data2.list[i].wind.speed}</p>`;
+        <p>Wind Speed: ${data2.list[i].wind.speed}</p>
+        </div>`;
         fiveSection.appendChild(fiveDay);
         };
     })
