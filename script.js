@@ -12,12 +12,12 @@ var currentDate = dayjs().format('MM-D-YYYY, dddd');
 
 var weatherHistory = JSON.parse(localStorage.getItem("weatherHistory"));
 if (weatherHistory) {
-  for (var i = 0; i < array.length; i++) {
-    const element = array[i];
-    historyBtn.innerText = cityName;
-      historyList.appendChild(historyBtn);
-      historyBtn.addEventListener("click", fetchLocation);
-    
+  for (var i = 0; i < weatherHistory.length; i++) {
+    var hist = weatherHistory[i];
+    var historyBtn = document.createElement("button");
+    historyBtn.innerText = hist;
+    historyList.appendChild(historyBtn);
+    historyBtn.addEventListener("click", fetchLocation);
   }
 }
 
@@ -69,22 +69,22 @@ function fetchLocation(currentCity) {
 
 
 
-      // historyArr.push(cityName);
-      localStorage.setItem("weatherHistory", JSON.stringify(cityName));
+      historyArr.push(cityName);
+      localStorage.setItem("weatherHistory", JSON.stringify(historyArr));
       var historyBtn = document.createElement("button");
       historyBtn.innerText = cityName;
       historyList.appendChild(historyBtn);
       historyBtn.addEventListener("click", fetchLocation);
 
 
-      var clear = document.createElement("button");
-      clear.innerText = "Clear History";
-      clear.addEventListener("click", clearHistory);
+      // var clear = document.createElement("button");
+      // clear.innerText = "Clear History";
+      // clear.addEventListener("click", clearHistory);
 
-      function clearHistory() {
-        historyList.innerHTML = "";
-        localStorage.clear();
-      }
+      // function clearHistory() {
+      //   historyList.innerHTML = "";
+      //   localStorage.clear();
+      // };
 
 
       
