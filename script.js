@@ -8,18 +8,18 @@ historyArr = [];
 
 var key = "c118df7a58d35d00efaf3e629f196896";
 
-var currentDate = dayjs().format('MM-D-YYYY, dddd');
+// var currentDate = dayjs().format('MM-D-YYYY, dddd');
 
-var weatherHistory = JSON.parse(localStorage.getItem("weatherHistory"));
-if (weatherHistory) {
-  for (var i = 0; i < weatherHistory.length; i++) {
-    var hist = weatherHistory[i];
-    var historyBtn = document.createElement("button");
-    historyBtn.innerText = hist;
-    historyList.appendChild(historyBtn);
-    historyBtn.addEventListener("click", fetchLocation);
-  }
-}
+// var weatherHistory = JSON.parse(localStorage.getItem("weatherHistory"));
+// if (weatherHistory) {
+//   for (var i = 0; i < weatherHistory.length; i++) {
+//     var hist = weatherHistory[i];
+//     var historyBtn = document.createElement("button");
+//     historyBtn.innerText = hist;
+//     historyList.appendChild(historyBtn);
+//     historyBtn.addEventListener("click", fetchLocation);
+//   }
+// }
 
 
 
@@ -33,7 +33,9 @@ function searchCity(event) {
 };
 
 function fetchLocation(currentCity) {
-  var api = `http://api.openweathermap.org/geo/1.0/direct?q=${currentCity}&appid=${key}`
+  fiveSection.innerHTML="";
+  searchInput.value = "";
+  var api = `https://api.openweathermap.org/data/2.5/forecast?q=${currentCity}&appid=${key}`
   fetch (api)
   .then(function(response) {
     var data = response.json();
@@ -41,30 +43,23 @@ function fetchLocation(currentCity) {
     return data;
   })
   .then (function(data) {
-    var lat = data[0].lat;
-    var lon = data[0].lon;
 
-    var api2 = `http://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=imperial&appid=${key}`
-    fetch (api2)
-    .then(function(response) {
-      var data2 = response.json();
-      console.log(data2);
-      return data2
-    })
-    .then(function(data2){
-      var cityName = data2.city.name;
-      var countryAbrv = data2.city.country;
+      var cityName = data.city.name;
+      var countryAbrv = data.city.country;
+
+      var date = data.list[0].dt;
+      var currentDate = new Date((date + data.city.timezone) * 1000).toDateString();
       
 
       var currentWeather = 
       `
       <h2>${cityName}, ${countryAbrv}</h2>
       <p>${currentDate}</p>
-      <p>${data2.list[0].weather[0].description}</p>
-      <img src="https://openweathermap.org/img/wn/${data2.list[0].weather[0].icon}@2x.png"/>
-      <p>Temp: ${data2.list[0].main.temp}&degF</p>
-      <p>Humidity: ${data2.list[0].main.humidity}</p>
-      <p>Wind Speed: ${data2.list[0].wind.speed}mph</p>`
+      <p>${data.list[0].weather[0].description}</p>
+      <img src="https://openweathermap.org/img/wn/${data.list[0].weather[0].icon}@2x.png"/>
+      <p>Temp: ${data.list[0].main.temp}&degF</p>
+      <p>Humidity: ${data.list[0].main.humidity}</p>
+      <p>Wind Speed: ${data.list[0].wind.speed}mph</p>`
   
       currentSection.innerHTML = currentWeather;
 
@@ -76,42 +71,44 @@ function fetchLocation(currentCity) {
       historyBtn.addEventListener("click", fetchLocation);
 
 
-      // var clear = document.createElement("button");
-      // clear.innerText = "Clear History";
-      // clear.addEventListener("click", clearHistory);
+      var clear = document.createElement("button");
+      clear.innerText = "Clear History";
+      clear.addEventListener("click", clearHistory);
 
-      // function clearHistory() {
-      //   historyList.innerHTML = "";
-      //   localStorage.clear();
-      // };
+      function clearHistory() {
+        historyList.innerHTML = "";
+        localStorage.clear();
+      };
 
 
       
       console.log(historyArr);
 
 
-      // 5 day forecast
+    //  5 day forecast
+      
 
-      for (var i = 1; i < 5; i++) {
+      for (var i = 0; i < 5; i++) {
 
-        var date = data2.list[i].dt;
-        var newDate = new Date((date + data2.city.timezone) * 1000).toDateString();
+      var newDate = data.list[i].dt;
+      var fiveDate = new Date((newDate + data.city.timezone) * 1000).toDateString();
+       
+        
 
         var fiveDay = document.createElement('div');
         
         fiveDay.innerHTML = 
         `<div class="weather-card">
-        <p>${newDate}</p>
-        <p>${data2.list[i].weather[0].description}</p>
-        <img src="https://openweathermap.org/img/wn/${data2.list[i].weather[0].icon}@2x.png"/>
-        <p>Temp: ${data2.list[i].main.temp}&degF</p>
-        <p>Humidity: ${data2.list[i].main.humidity}</p>
-        <p>Wind Speed: ${data2.list[i].wind.speed}</p>
+        <p>${fiveDate}</p>
+        <p>${data.list[i].weather[0].description}</p>
+        <img src="https://openweathermap.org/img/wn/${data.list[i].weather[0].icon}@2x.png"/>
+        <p>Temp: ${data.list[i].main.temp}&degF</p>
+        <p>Humidity: ${data.list[i].main.humidity}</p>
+        <p>Wind Speed: ${data.list[i].wind.speed}</p>
         </div>`;
         fiveSection.appendChild(fiveDay);
         };
     })
-   })
 }
 
 searchBtn.addEventListener("click", searchCity);
