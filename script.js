@@ -8,6 +8,8 @@ historyArr = [];
 
 var key = "c118df7a58d35d00efaf3e629f196896";
 
+// var currentDate = dayjs(date * 1000).format('MM-D-YYYY, dddd');
+
 // var currentDate = dayjs().format('MM-D-YYYY, dddd');
 
 // var weatherHistory = JSON.parse(localStorage.getItem("weatherHistory"));
@@ -47,14 +49,17 @@ function fetchLocation(currentCity) {
       var cityName = data.city.name;
       var countryAbrv = data.city.country;
 
-      var date = data.list[0].dt;
-      var currentDate = new Date((date + data.city.timezone) * 1000).toDateString();
+      var date = dayjs.unix(data.list[0].dt).format("MM-DD-YYYY");
+      // var date = data.list[0].dt;
+      // var currentDate = new Date((date + data.city.timezone) * 1000).toDateString();
+      
+      
       
 
       var currentWeather = 
       `
       <h2>${cityName}, ${countryAbrv}</h2>
-      <p>${currentDate}</p>
+      <p>${date}</p>
       <p>${data.list[0].weather[0].description}</p>
       <img src="https://openweathermap.org/img/wn/${data.list[0].weather[0].icon}@2x.png"/>
       <p>Temp: ${data.list[0].main.temp}&degF</p>
@@ -90,12 +95,16 @@ function fetchLocation(currentCity) {
 
       for (var i = 0; i < 5; i++) {
 
-      var newDate = data.list[i].dt;
-      var fiveDate = new Date((newDate + data.city.timezone) * 1000).toDateString();
+      // var fiveDate = data.list[i].dt;
+      // var fiveDate = new Date((newDate + data.city.timezone) * 1000).toDateString();
        
         
 
         var fiveDay = document.createElement('div');
+
+        // var time = dayjs(data.list[i].dt * 1000).format('MM-D-YYYY, dddd');
+
+        var fiveDate = dayjs.unix(data.list[i].dt).format("MM-DD-YYYY");
         
         fiveDay.innerHTML = 
         `<div class="weather-card">
