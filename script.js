@@ -45,25 +45,25 @@ function fetchLocation(currentCity) {
     return data;
   })
   .then (function(data) {
-    var lat = data.city.coord.lat;
-    var lon = data.city.coord.lon;
+    // var lat = data.city.coord.lat;
+    // var lon = data.city.coord.lon;
 
-    console.log(lat);
-    console.log(lon);
-    var apiTwo = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${key}`
-    fetch (apiTwo)
-    .then(function(response) {
-      var data2 = response.json();
-      console.log(data2);
-      return data2;
-    })
-      .then(function(data2) {
-      var cityName = data2.city.name;
-      var countryAbrv = data2.city.country;
+    // console.log(lat);
+    // console.log(lon);
+    // var apiTwo = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${key}`
+    // fetch (apiTwo)
+    // .then(function(response) {
+    //   var data2 = response.json();
+    //   console.log(data2);
+    //   return data2;
+    // })
+    //   .then(function(data2) {
+    var cityName = data.city.name;
+    var countryAbrv = data.city.country;
 
-      // var date = dayjs.unix(data2.list[0].dt).format("MM-DD-YYYY");
-      var date = data2.list[0].dt;
-      // var currentDate = new Date((date + data.city.timezone) * 1000).toDateString();
+    var date = dayjs.unix(data.list[0].dt).format("MM-DD-YYYY");
+    // var date = data.list[0].dt;
+    // var currentDate = new Date((date + data.city.timezone) * 1000).toDateString();
       
       
       
@@ -72,11 +72,11 @@ function fetchLocation(currentCity) {
       `
       <h2>${cityName}, ${countryAbrv}</h2>
       <p>${date}</p>
-      <p>${data2.list[0].weather[0].description}</p>
-      <img src="https://openweathermap.org/img/wn/${data2.list[0].weather[0].icon}@2x.png"/>
-      <p>Temp: ${data2.list[0].main.temp}&degF</p>
-      <p>Humidity: ${data2.list[0].main.humidity}</p>
-      <p>Wind Speed: ${data2.list[0].wind.speed}mph</p>`
+      <p>${data.list[0].weather[0].description}</p>
+      <img src="https://openweathermap.org/img/wn/${data.list[0].weather[0].icon}@2x.png"/>
+      <p>Temp: ${data.list[0].main.temp}&degF</p>
+      <p>Humidity: ${data.list[0].main.humidity}</p>
+      <p>Wind Speed: ${data.list[0].wind.speed}mph</p>`
   
       currentSection.innerHTML = currentWeather;
 
@@ -105,10 +105,11 @@ function fetchLocation(currentCity) {
     //  5 day forecast
       
 
-      for (var i = 1; i < data2.list.length; i+=8) {
+      for (var i = 1; i < data.list.length; i+=8) {
 
-      // var fiveDate = data.list[i].dt;
+      var fvdt = data.list[i].dt_txt;
       // var fiveDate = new Date((newDate + data.city.timezone) * 1000).toDateString();
+      var fiveDate = dayjs(`${fvdt}`).format('dddd MM/DD')
        
         var fiveDay = document.createElement('div');
 
@@ -118,17 +119,17 @@ function fetchLocation(currentCity) {
         
         fiveDay.innerHTML = 
         `<div class="weather-card">
-        <p>${data2.list[i].dt_txt}</p>
-        <p>${data2.list[i].weather[0].description}</p>
-        <img src="https://openweathermap.org/img/wn/${data2.list[i].weather[0].icon}@2x.png"/>
-        <p>Temp: ${data2.list[i].main.temp}&degF</p>
-        <p>Humidity: ${data2.list[i].main.humidity}</p>
-        <p>Wind Speed: ${data2.list[i].wind.speed}</p>
+        <p>${fiveDate}</p>
+        <p>${data.list[i].weather[0].description}</p>
+        <img src="https://openweathermap.org/img/wn/${data.list[i].weather[0].icon}@2x.png"/>
+        <p>Temp: ${data.list[i].main.temp}&degF</p>
+        <p>Humidity: ${data.list[i].main.humidity}</p>
+        <p>Wind Speed: ${data.list[i].wind.speed}mph</p>
         </div>`;
         fiveSection.appendChild(fiveDay);
         };
     })
-  })
+  
 }
 
 searchBtn.addEventListener("click", searchCity);
