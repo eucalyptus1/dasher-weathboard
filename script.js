@@ -45,12 +45,24 @@ function fetchLocation(currentCity) {
     return data;
   })
   .then (function(data) {
+    var lat = data.city.coord.lat;
+    var lon = data.city.coord.lon;
 
-      var cityName = data.city.name;
-      var countryAbrv = data.city.country;
+    console.log(lat);
+    console.log(lon);
+    var apiTwo = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${key}`
+    fetch (apiTwo)
+    .then(function(response) {
+      var data2 = response.json();
+      console.log(data2);
+      return data2;
+    })
+      .then(function(data2) {
+      var cityName = data2.city.name;
+      var countryAbrv = data2.city.country;
 
-      var date = dayjs.unix(data.list[0].dt).format("MM-DD-YYYY");
-      // var date = data.list[0].dt;
+      // var date = dayjs.unix(data2.list[0].dt).format("MM-DD-YYYY");
+      var date = data2.list[0].dt;
       // var currentDate = new Date((date + data.city.timezone) * 1000).toDateString();
       
       
@@ -60,64 +72,63 @@ function fetchLocation(currentCity) {
       `
       <h2>${cityName}, ${countryAbrv}</h2>
       <p>${date}</p>
-      <p>${data.list[0].weather[0].description}</p>
-      <img src="https://openweathermap.org/img/wn/${data.list[0].weather[0].icon}@2x.png"/>
-      <p>Temp: ${data.list[0].main.temp}&degF</p>
-      <p>Humidity: ${data.list[0].main.humidity}</p>
-      <p>Wind Speed: ${data.list[0].wind.speed}mph</p>`
+      <p>${data2.list[0].weather[0].description}</p>
+      <img src="https://openweathermap.org/img/wn/${data2.list[0].weather[0].icon}@2x.png"/>
+      <p>Temp: ${data2.list[0].main.temp}&degF</p>
+      <p>Humidity: ${data2.list[0].main.humidity}</p>
+      <p>Wind Speed: ${data2.list[0].wind.speed}mph</p>`
   
       currentSection.innerHTML = currentWeather;
 
-      historyArr.push(cityName);
-      localStorage.setItem("weatherHistory", JSON.stringify(historyArr));
-      var historyBtn = document.createElement("button");
-      historyBtn.innerText = cityName;
-      historyList.appendChild(historyBtn);
-      historyBtn.addEventListener("click", fetchLocation);
+    //   historyArr.push(cityName);
+    //   localStorage.setItem("weatherHistory", JSON.stringify(historyArr));
+    //   var historyBtn = document.createElement("button");
+    //   historyBtn.innerText = cityName;
+    //   historyList.appendChild(historyBtn);
+    //   historyBtn.addEventListener("click", fetchLocation);
 
 
-      var clear = document.createElement("button");
-      clear.innerText = "Clear History";
-      clear.addEventListener("click", clearHistory);
+    //   var clear = document.createElement("button");
+    //   clear.innerText = "Clear History";
+    //   clear.addEventListener("click", clearHistory);
 
-      function clearHistory() {
-        historyList.innerHTML = "";
-        localStorage.clear();
-      };
+    //   function clearHistory() {
+    //     historyList.innerHTML = "";
+    //     localStorage.clear();
+    //   };
 
 
       
-      console.log(historyArr);
+    //   console.log(historyArr);
 
 
     //  5 day forecast
       
 
-      for (var i = 0; i < 5; i++) {
+      for (var i = 1; i < data2.list.length; i+=8) {
 
       // var fiveDate = data.list[i].dt;
       // var fiveDate = new Date((newDate + data.city.timezone) * 1000).toDateString();
        
-        
-
         var fiveDay = document.createElement('div');
 
         // var time = dayjs(data.list[i].dt * 1000).format('MM-D-YYYY, dddd');
 
-        var fiveDate = dayjs.unix(data.list[i].dt).format("MM-DD-YYYY");
+        
         
         fiveDay.innerHTML = 
         `<div class="weather-card">
-        <p>${fiveDate}</p>
-        <p>${data.list[i].weather[0].description}</p>
-        <img src="https://openweathermap.org/img/wn/${data.list[i].weather[0].icon}@2x.png"/>
-        <p>Temp: ${data.list[i].main.temp}&degF</p>
-        <p>Humidity: ${data.list[i].main.humidity}</p>
-        <p>Wind Speed: ${data.list[i].wind.speed}</p>
+        <p>${data2.list[i].dt_txt}</p>
+        <p>${data2.list[i].weather[0].description}</p>
+        <img src="https://openweathermap.org/img/wn/${data2.list[i].weather[0].icon}@2x.png"/>
+        <p>Temp: ${data2.list[i].main.temp}&degF</p>
+        <p>Humidity: ${data2.list[i].main.humidity}</p>
+        <p>Wind Speed: ${data2.list[i].wind.speed}</p>
         </div>`;
         fiveSection.appendChild(fiveDay);
         };
     })
+  })
 }
 
 searchBtn.addEventListener("click", searchCity);

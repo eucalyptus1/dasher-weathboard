@@ -26,6 +26,7 @@ main {
     border-style: solid;
     border-color: royalblue;
     border-radius: 5px;
+    text-align: center;
 }
 
 .five-section {
