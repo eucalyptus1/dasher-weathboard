@@ -37,7 +37,7 @@ function searchCity(event) {
 function fetchLocation(currentCity) {
   fiveSection.innerHTML="";
   searchInput.value = "";
-  var api = `https://api.openweathermap.org/data/2.5/forecast?q=${currentCity}&appid=${key}`
+  var api = `https://api.openweathermap.org/data/2.5/forecast?q=${currentCity}&units=imperial&appid=${key}`
   fetch (api)
   .then(function(response) {
     var data = response.json();
@@ -61,7 +61,7 @@ function fetchLocation(currentCity) {
     var cityName = data.city.name;
     var countryAbrv = data.city.country;
 
-    var date = dayjs.unix(data.list[0].dt).format("MM-DD-YYYY");
+    var date = dayjs.unix(data.list[0].dt).format("dddd MM/DD/YYYY");
     // var date = data.list[0].dt;
     // var currentDate = new Date((date + data.city.timezone) * 1000).toDateString();
       
